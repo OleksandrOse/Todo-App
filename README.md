@@ -3,4 +3,4 @@ This page is demonstrated a possible solution of visualization of the layout des
 
 Stack: HTML5, SASS, BEM, JS, React(JSX, hooks, router, class, functional components and Typescript).
 
-Click the link to see [DEMO](https://OleksandrOse.github.io/Phone-Catalog/).
+Click the link to see [DEMO](https://OleksandrOse.github.io/Todo-App/).
