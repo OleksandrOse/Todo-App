@@ -8,10 +8,14 @@ import { warningTimer } from '../../utils/warningTimer';
 type Props = {
   user: User,
   setUser: (user: User) => void;
-  setError: (error: boolean) => void;
+  setIsError: (error: boolean) => void;
 };
 
-export const UserWarning: React.FC<Props> = ({ user, setUser, setError }) => {
+export const UserWarning: React.FC<Props> = ({
+  user,
+  setUser,
+  setIsError,
+}) => {
   const {
     name: nickName,
     username,
@@ -43,8 +47,8 @@ export const UserWarning: React.FC<Props> = ({ user, setUser, setError }) => {
 
       setUser(userData);
     } catch (error) {
-      setError(true);
-      warningTimer(setError, false, 3000);
+      setIsError(true);
+      warningTimer(setIsError, false, 3000);
     }
   };
 

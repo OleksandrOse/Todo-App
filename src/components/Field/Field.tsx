@@ -36,9 +36,6 @@ export const Field: React.FC<Props> = ({
 
         />
       </div>
-      {hasError && (
-        <p className="help is-danger">{`${name} is required`}</p>
-      )}
     </div>
   );
 };

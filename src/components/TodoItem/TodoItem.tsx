@@ -4,6 +4,8 @@ import React, {
   useRef,
   useEffect,
   useCallback,
+  Dispatch,
+  SetStateAction,
 } from 'react';
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
@@ -15,16 +17,15 @@ type Props = {
   user: User,
   todo: Todo;
   todos: Todo[];
-  setTodos: (todos: Todo[]) => void;
-  setError: (error: boolean) => void;
+  setTodos: Dispatch<SetStateAction<Todo[]>>;
+  setIsError: (error: boolean) => void;
 };
 
 export const TodoItem: React.FC<Props> = React.memo(({
   user,
   todo,
-  todos,
   setTodos,
-  setError,
+  setIsError,
 }) => {
   const { id, title, completed } = todo;
   const [isEditing, setIsEditing] = useState(false);
@@ -34,12 +35,12 @@ export const TodoItem: React.FC<Props> = React.memo(({
   const removeTodo = useCallback(async () => {
     try {
       await deleteTodo(user.id, id);
-      setTodos(todos.filter(currentTodo => {
+      setTodos(prevTodos => prevTodos.filter(currentTodo => {
         return currentTodo.id !== id;
       }));
     } catch {
-      setError(true);
-      warningTimer(setError, false, 3000);
+      setIsError(true);
+      warningTimer(setIsError, false, 3000);
     }
   }, [todo]);
 
@@ -49,7 +50,7 @@ export const TodoItem: React.FC<Props> = React.memo(({
   ) => {
     await updateTodo(user.id, id, newTitle);
 
-    setTodos(todos.map(currentTodo => {
+    setTodos(prevTodos => prevTodos.map(currentTodo => {
       if (currentTodo.id === todoId) {
         return {
           ...currentTodo,
@@ -73,8 +74,8 @@ export const TodoItem: React.FC<Props> = React.memo(({
         removeTodo();
         await deleteTodo(user.id, id);
       } catch {
-        setError(true);
-        warningTimer(setError, false, 3000);
+        setIsError(true);
+        warningTimer(setIsError, false, 3000);
       }
     }
 
@@ -92,7 +93,7 @@ export const TodoItem: React.FC<Props> = React.memo(({
     try {
       await toogleTodo(user.id, id, !completed);
 
-      setTodos(todos.map(currentTodo => {
+      setTodos(prevTodos => prevTodos.map(currentTodo => {
         if (currentTodo.id === id) {
           return {
             ...currentTodo,
@@ -103,8 +104,8 @@ export const TodoItem: React.FC<Props> = React.memo(({
         return currentTodo;
       }));
     } catch (error) {
-      setError(true);
-      warningTimer(setError, false, 3000);
+      setIsError(true);
+      warningTimer(setIsError, false, 3000);
     }
   }, [todo]);
 

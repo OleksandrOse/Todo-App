@@ -1,6 +1,8 @@
 import React, {
   useState,
   useCallback,
+  SetStateAction,
+  Dispatch,
 } from 'react';
 import { createTodo } from '../../api/todos';
 import { Todo } from '../../types/Todo';
@@ -8,16 +10,14 @@ import { User } from '../../types/User';
 
 type Props = {
   user: User;
-  todos: Todo[];
-  onAddTodo: (todos: Todo[]) => void;
-  setError: (error: boolean) => void;
+  onAddTodo: Dispatch<SetStateAction<Todo[]>>;
+  setIsError: (error: boolean) => void;
 };
 
 export const Header: React.FC<Props> = ({
   user,
-  todos,
   onAddTodo,
-  setError,
+  setIsError,
 }) => {
   const [title, setTitle] = useState('');
 
@@ -47,9 +47,9 @@ export const Header: React.FC<Props> = ({
 
         const addedTodo = await createTodo(user.id, newTodo);
 
-        onAddTodo([...todos, addedTodo]);
+        onAddTodo(prevTodos => [...prevTodos, addedTodo]);
       } catch (error) {
-        setError(true);
+        setIsError(true);
       } finally {
         setTitle('');
       }

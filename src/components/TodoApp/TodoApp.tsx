@@ -19,7 +19,7 @@ import { User } from '../../types/User';
 import { warningTimer } from '../../utils/warningTimer';
 
 export const TodoApp: React.FC = () => {
-  const [error, setError] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [todos, setTodos] = useLocalStorage<Todo[]>('todos', []);
   const [user, setUser] = useLocalStorage<User>('user', {
     id: 0,
@@ -48,10 +48,10 @@ export const TodoApp: React.FC = () => {
         return deleteTodo(id, todo.id);
       }));
 
-      setTodos(todos.filter(({ completed }) => !completed));
+      setTodos(prevTodos => prevTodos.filter(({ completed }) => !completed));
     } catch {
-      setError(true);
-      warningTimer(setError, false, 3000);
+      setIsError(true);
+      warningTimer(setIsError, false, 3000);
     }
   }, [todos]);
 
@@ -61,13 +61,13 @@ export const TodoApp: React.FC = () => {
         return toogleTodo(id, todo.id, !isAllCompleted);
       }));
 
-      setTodos(todos.map((todo) => ({
+      setTodos(prevTodos => prevTodos.map((todo) => ({
         ...todo,
         completed: !isAllCompleted,
       })));
     } catch {
-      setError(true);
-      warningTimer(setError, false, 3000);
+      setIsError(true);
+      warningTimer(setIsError, false, 3000);
     }
   }, [todos]);
 
@@ -78,8 +78,8 @@ export const TodoApp: React.FC = () => {
 
         setTodos(todosData);
       } catch {
-        setError(true);
-        warningTimer(setError, false, 3000);
+        setIsError(true);
+        warningTimer(setIsError, false, 3000);
       }
     })();
   }, [id]);
@@ -88,7 +88,7 @@ export const TodoApp: React.FC = () => {
     localStorage.setItem('todos', JSON.stringify(todos));
   }, [todos]);
 
-  if (error) {
+  if (isError) {
     return <Error />;
   }
 
@@ -97,52 +97,55 @@ export const TodoApp: React.FC = () => {
       <UserWarning
         user={user}
         setUser={setUser}
-        setError={setError}
+        setIsError={setIsError}
       />
     );
   }
 
   return (
-    <div className="todoapp">
-      <Header
-        user={user}
-        todos={todos}
-        onAddTodo={setTodos}
-        setError={setError}
-      />
-
-      <section className="main">
-        <input
-          type="checkbox"
-          id="toggle-all"
-          className="toggle-all"
-          data-cy="toggleAll"
-          checked={isAllCompleted}
-          onChange={onToogleAllTodos}
-        />
-        <label
-          htmlFor="toggle-all"
-          className={classNames(
-            { 'toggle-all-label': isAllCompleted },
-          )}
-
-        >
-          Mark all as complete
-        </label>
-
-        <TodoList
+    <div className="container">
+      <div className="todoapp">
+        <Header
           user={user}
-          todos={todos}
-          setTodos={setTodos}
-          setError={setError}
+          onAddTodo={setTodos}
+          setIsError={setIsError}
         />
-      </section>
 
-      <Footer
-        onClearCompleted={clearCompleted}
-        activeTodos={activeTodos}
-        allCompleted={allCompleted}
-      />
+        <section className="main">
+          <input
+            type="checkbox"
+            id="toggle-all"
+            className="toggle-all"
+            data-cy="toggleAll"
+            checked={isAllCompleted}
+            onChange={onToogleAllTodos}
+          />
+          <label
+            htmlFor="toggle-all"
+            className={classNames(
+              { 'toggle-all-label': isAllCompleted },
+            )}
+
+          >
+            Mark all as complete
+          </label>
+
+          <TodoList
+            user={user}
+            todos={todos}
+            setTodos={setTodos}
+            setIsError={setIsError}
+          />
+        </section>
+
+        {todos.length ? (
+          <Footer
+            onClearCompleted={clearCompleted}
+            activeTodos={activeTodos}
+            allCompleted={allCompleted}
+          />
+        ) : null}
+      </div>
     </div>
   );
 };

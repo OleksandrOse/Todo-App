@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { Dispatch, SetStateAction, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Todo } from '../../types/Todo';
 import { TodoItem } from '../TodoItem';
@@ -8,15 +8,15 @@ import { User } from '../../types/User';
 type Props = {
   user: User;
   todos: Todo[];
-  setTodos: (todos: Todo[]) => void;
-  setError: (error: boolean) => void;
+  setTodos: Dispatch<SetStateAction<Todo[]>>;
+  setIsError: (error: boolean) => void;
 };
 
 export const TodoList: React.FC<Props> = React.memo(({
   user,
   todos,
   setTodos,
-  setError,
+  setIsError,
 }) => {
   const { pathname } = useLocation();
 
@@ -42,7 +42,7 @@ export const TodoList: React.FC<Props> = React.memo(({
           key={todo.id}
           todos={todos}
           setTodos={setTodos}
-          setError={setError}
+          setIsError={setIsError}
         />
       ))}
     </ul>
