@@ -1,0 +1,85 @@
+.form {
+  margin: 0 auto;
+  box-shadow: none;
+}
+
+.field {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.input {
+  position: relative;
+  margin: 0;
+  font-size: 24px;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: 1.4em;
+  color: inherit;
+  border: 1px solid #999;
+  padding: 16px 16px 16px 60px;
+  background: rgba(0, 0, 0, 0.01);
+  box-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input::-webkit-input-placeholder {
+  font-style: italic;
+  font-weight: 300;
+  color: #e6e6e6;
+}
+
+.input::-ms-input-placeholder {
+  font-style: italic;
+  font-weight: 300;
+  color: #e6e6e6;
+}
+
+.input::placeholder {
+  font-style: italic;
+  font-weight: 300;
+  color: #e6e6e6;
+}
+
+.input.is-danger::placeholder {
+  font-style: italic;
+  font-weight: 300;
+  color: red;
+}
+
+.field:hover {
+  border-color: #292929;
+}
+
+.is-danger {
+  color: red;
+  outline: none;
+  border: 2px solid red;
+  border-radius: 5px;
+  box-shadow: none;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 60px;
+
+  background-color: green;
+
+  font-size: 24px;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: 1.4em;
+  color: black;
+  cursor: pointer;
+}
+
+.is-disabled {
+  background-color: lightgreen;
+}
